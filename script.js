@@ -170,18 +170,6 @@ function checkGuess() {
         overlayReset.classList.remove("danger");
         overlayReset.classList.add("hidden");
         showOverlayMessage("Correct!", "Nice job 🎉", false);
-        setTimeout(() => {
-            // Load next or show end
-            currentIndex++;
-            if (currentIndex >= words.length) {
-                showEnd();
-            } else {
-                localStorage.setItem("lettershiftle_progress", currentIndex);
-                startGame({
-                    words
-                });
-            }
-        }, 4000);
     } else {
         currentRow++;
         currentGuess = "";
@@ -209,7 +197,26 @@ function showOverlayMessage(title, body, autoclose = false) {
     }
 }
 
-overlayNext.addEventListener("click", () => overlay.classList.add("hidden"));
+overlayNext.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+    board.classList.add("hidden");
+    keyboardEl.classList.add("hidden");
+    shuffledEl.textContent = "L O A D I N G";
+    setTimeout(() => {
+            // Load next or show end
+            currentIndex++;
+            if (currentIndex >= words.length) {
+                showEnd();
+            } else {
+                localStorage.setItem("lettershiftle_progress", currentIndex);
+                startGame({
+                    words
+                });
+            }
+            board.classList.remove("hidden");
+            keyboardEl.classList.remove("hidden");
+    }, 2800);
+});
 overlayReset.addEventListener("click", () => {
     //localStorage.removeItem("lettershiftle_progress");
     location.reload();

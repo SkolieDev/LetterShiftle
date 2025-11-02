@@ -101,6 +101,10 @@ body {
   gap: 8px;
 }
 
+.board.hidden {
+    display: none;
+}
+
 .row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -154,6 +158,10 @@ body {
     gap: 6px;
     margin-top: 18px;
     width: 100%;
+}
+
+.keyboard.hidden {
+    display: none;
 }
 
 .key {
