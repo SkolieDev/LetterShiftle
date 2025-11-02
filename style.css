@@ -57,6 +57,7 @@ body {
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
+    padding: 10px;
 }
 
 .small.danger {
@@ -221,6 +222,40 @@ body {
     gap: 8px;
     justify-content: center;
     margin-top: 12px;
+}
+
+#levelSelect {
+  text-align: center;
+  padding: 20px;
+}
+#levelButtons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+#levelButtons button {
+  background: #333;
+  color: white;
+  border: 1px solid #666;
+  border-radius: 8px;
+  font-size: 1.2em;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+#levelButtons button:hover {
+  background: #555;
+}
+body.light #levelButtons button {
+  background: #eee;
+  color: #222;
+  border-color: #ccc;
+}
+
+.hidden {
+    display: none;
 }
 
 /* confetti */

@@ -18,19 +18,43 @@ const endScreen = document.getElementById("endScreen");
 const restartBtn = document.getElementById("restartBtn");
 const themeBtn = document.getElementById("themeBtn");
 const progressText = document.getElementById("progressText");
+const selectLevel = document.getElementById("levelSelect");
 
 fetch("words.json").then(r => r.json()).then(startGame);
 
+function showLevelSelect() {
+  const buttons = document.getElementById("levelButtons");
+  document.getElementById("levels").classList.remove("hidden");
+  document.getElementById("maingame").classList.add("hidden");
+  buttons.innerHTML = "";
+
+  for (let i = 0; i < Math.min(words.length, 600); i++) { // máx. 50 visibles
+    const btn = document.createElement("button");
+    btn.textContent = i + 1;
+    btn.addEventListener("click", () => {
+      currentIndex = i;
+      startGame({ words });
+    });
+    buttons.appendChild(btn);
+  }
+}
+
 function startGame(data) {
     words = data.words;
-    const saved = localStorage.getItem("lettershiftle_progress");
-    currentIndex = saved ? parseInt(saved, 10) : 0;
+    // === Load last progress ===
+    const progress = loadData("lettershiftle_progress") || {
+        index: 0
+    };
+    if (typeof currentIndex === "undefined") {
+        currentIndex = progress.index || 0;
+    }
+    const index = currentIndex % words.length;
     updateProgress();
-    if (currentIndex >= words.length) {
+    if (index >= words.length) {
         showEnd();
         return;
     }
-    secretWord = words[currentIndex].toLowerCase();
+    secretWord = words[index].toLowerCase();
     shuffledWord = shuffleWord(secretWord);
     shuffledEl.textContent = shuffledWord.toUpperCase();
     resetBoard();
@@ -67,6 +91,9 @@ function resetBoard() {
         }
         board.appendChild(row);
     }
+    document.getElementById("levels").classList.add("hidden");
+    document.getElementById("maingame").classList.remove("hidden");
+    selectLevel.classList.remove("hidden");
 }
 
 function createKeyboard() {
@@ -203,22 +230,24 @@ overlayNext.addEventListener("click", () => {
     keyboardEl.classList.add("hidden");
     shuffledEl.textContent = "L O A D I N G";
     setTimeout(() => {
-            // Load next or show end
-            currentIndex++;
-            if (currentIndex >= words.length) {
-                showEnd();
-            } else {
-                localStorage.setItem("lettershiftle_progress", currentIndex);
-                startGame({
-                    words
-                });
-            }
-            board.classList.remove("hidden");
-            keyboardEl.classList.remove("hidden");
+        // Load next or show end
+        currentIndex++;
+        if (currentIndex >= words.length) {
+            showEnd();
+        } else {
+            saveData("lettershiftle_progress", {
+                index: currentIndex
+            });
+            startGame({
+                words
+            });
+
+        }
+        board.classList.remove("hidden");
+        keyboardEl.classList.remove("hidden");
     }, 2800);
 });
 overlayReset.addEventListener("click", () => {
-    //localStorage.removeItem("lettershiftle_progress");
     location.reload();
 });
 
@@ -226,6 +255,11 @@ restartBtn.addEventListener("click", () => {
     currentIndex = 0;
     localStorage.removeItem("lettershiftle_progress");
     location.reload();
+});
+
+selectLevel.addEventListener("click", () => {
+    selectLevel.classList.add("hidden");
+    showLevelSelect();
 });
 
 // Keyboard physical support
@@ -253,11 +287,40 @@ themeBtn.addEventListener("click", () => {
 });
 
 function updateProgress() {
-    progressText.textContent = `${Math.min(currentIndex, words.length)}/${words.length}`;
+    progressText.textContent = `${Math.min(currentIndex + 1, words.length)}/${words.length}`;
 }
 
 function showEnd() {
     endScreen.classList.remove("hidden");
+}
+
+// === Hibrid Save ===
+function saveData(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+        // fallback cookies
+        document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};path=/;max-age=31536000`;
+    }
+}
+
+function loadData(key) {
+    try {
+        const data = localStorage.getItem(key);
+        if (data) return JSON.parse(data);
+    } catch (e) {
+        const match = document.cookie.match(new RegExp(`${key}=([^;]+)`));
+        if (match) return JSON.parse(decodeURIComponent(match[1]));
+    }
+    return null;
+}
+
+function clearData(key) {
+    try {
+        localStorage.removeItem(key);
+    } catch (e) {
+        document.cookie = `${key}=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    }
 }
 
 // Confetti

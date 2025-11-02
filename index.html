@@ -13,19 +13,25 @@
         <header class="top">
             <h1>LetterShiftle</h1>
             <div class="controls">
+                <button id="levelSelect" class="small">Select level</button>
                 <button id="themeBtn" class="small">Toggle theme</button>
                 <div id="progressText" class="small muted">0/0</div>
             </div>
         </header>
 
-        <section class="center">
+        <div id="levels" class="hidden">
+            <h2>Select Level</h2>
+            <div id="levelButtons"></div>
+        </div>
+
+        <section id="maingame" class="center">
             <p id="shuffledWord" class="shuffled">LOADING</p>
             <div id="game-board" class="board" aria-hidden="false"></div>
             <div id="keyboard" class="keyboard" aria-hidden="false"></div>
         </section>
 
         <footer class="footer muted">
-            Play at your pace — progress is saved locally. Made for itch.io by Skolie Dev.
+            Play at your pace. Made for itch.io by Skolie Dev.
         </footer>
     </main>
 
