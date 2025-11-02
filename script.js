@@ -6,6 +6,17 @@ let currentRow = 0;
 let currentGuess = "";
 let gameOver = false;
 
+
+const homeBtn = document.getElementById("homeBtn");
+const themeBtn = document.getElementById("themeBtn");
+
+const playbtn = document.getElementById("playbtn");
+const selectLevel = document.getElementById("levelSelect");
+const settingsbtn = document.getElementById("settingsbtn");
+
+const levels = document.getElementById("levels");
+const maingameScreen = document.getElementById("maingame");
+
 const board = document.getElementById("game-board");
 const keyboardEl = document.getElementById("keyboard");
 const shuffledEl = document.getElementById("shuffledWord");
@@ -16,27 +27,32 @@ const overlayNext = document.getElementById("overlay-next");
 const overlayReset = document.getElementById("overlay-reset");
 const endScreen = document.getElementById("endScreen");
 const restartBtn = document.getElementById("restartBtn");
-const themeBtn = document.getElementById("themeBtn");
 const progressText = document.getElementById("progressText");
-const selectLevel = document.getElementById("levelSelect");
 
-fetch("words.json").then(r => r.json()).then(startGame);
+
+fetch("words.json").then(r => r.json()).then(loadGame);
+
+function loadGame(data) {
+    words = data.words;
+    maingameScreen.classList.add("hidden");
+    progressText.classList.add("hidden");
+}
 
 function showLevelSelect() {
-  const buttons = document.getElementById("levelButtons");
-  document.getElementById("levels").classList.remove("hidden");
-  document.getElementById("maingame").classList.add("hidden");
-  buttons.innerHTML = "";
+    const buttons = document.getElementById("levelButtons");
+    buttons.innerHTML = "";
 
-  for (let i = 0; i < Math.min(words.length, 600); i++) { // máx. 50 visibles
-    const btn = document.createElement("button");
-    btn.textContent = i + 1;
-    btn.addEventListener("click", () => {
-      currentIndex = i;
-      startGame({ words });
-    });
-    buttons.appendChild(btn);
-  }
+    for (let i = 0; i < Math.min(words.length, 600); i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i + 1;
+        btn.addEventListener("click", () => {
+            currentIndex = i;
+            startGame({
+                words
+            });
+        });
+        buttons.appendChild(btn);
+    }
 }
 
 function startGame(data) {
@@ -93,7 +109,6 @@ function resetBoard() {
     }
     document.getElementById("levels").classList.add("hidden");
     document.getElementById("maingame").classList.remove("hidden");
-    selectLevel.classList.remove("hidden");
 }
 
 function createKeyboard() {
@@ -224,68 +239,6 @@ function showOverlayMessage(title, body, autoclose = false) {
     }
 }
 
-overlayNext.addEventListener("click", () => {
-    overlay.classList.add("hidden");
-    board.classList.add("hidden");
-    keyboardEl.classList.add("hidden");
-    shuffledEl.textContent = "L O A D I N G";
-    setTimeout(() => {
-        // Load next or show end
-        currentIndex++;
-        if (currentIndex >= words.length) {
-            showEnd();
-        } else {
-            saveData("lettershiftle_progress", {
-                index: currentIndex
-            });
-            startGame({
-                words
-            });
-
-        }
-        board.classList.remove("hidden");
-        keyboardEl.classList.remove("hidden");
-    }, 2800);
-});
-overlayReset.addEventListener("click", () => {
-    location.reload();
-});
-
-restartBtn.addEventListener("click", () => {
-    currentIndex = 0;
-    localStorage.removeItem("lettershiftle_progress");
-    location.reload();
-});
-
-selectLevel.addEventListener("click", () => {
-    selectLevel.classList.add("hidden");
-    showLevelSelect();
-});
-
-// Keyboard physical support
-document.addEventListener("keydown", (e) => {
-    if (gameOver) return;
-    const k = e.key.toUpperCase();
-    if (k === "ENTER") {
-        checkGuess();
-        return;
-    }
-    if (k === "BACKSPACE") {
-        deleteLetter();
-        return;
-    }
-    if (/^[A-Z]$/.test(k)) {
-        // Only accept if allowed (enabled on screen)
-        const allowed = new Set(secretWord.toUpperCase().split(""));
-        if (allowed.has(k)) handleKey(k);
-    }
-});
-
-// Theme toggler
-themeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-});
-
 function updateProgress() {
     progressText.textContent = `${Math.min(currentIndex + 1, words.length)}/${words.length}`;
 }
@@ -340,3 +293,86 @@ function showConfetti() {
         setTimeout(() => c.remove(), 4500);
     }
 }
+
+
+// === BUTTONS ===
+restartBtn.addEventListener("click", () => {
+    currentIndex = 0;
+    localStorage.removeItem("lettershiftle_progress");
+    location.reload();
+});
+
+// Keyboard physical support
+document.addEventListener("keydown", (e) => {
+    if (gameOver) return;
+    const k = e.key.toUpperCase();
+    if (k === "ENTER") {
+        checkGuess();
+        return;
+    }
+    if (k === "BACKSPACE") {
+        deleteLetter();
+        return;
+    }
+    if (/^[A-Z]$/.test(k)) {
+        // Only accept if allowed (enabled on screen)
+        const allowed = new Set(secretWord.toUpperCase().split(""));
+        if (allowed.has(k)) handleKey(k);
+    }
+});
+
+// Theme toggler
+homeBtn.addEventListener("click", () => {
+    home.classList.remove("hidden");
+    levels.classList.add("hidden");
+    progressText.classList.add("hidden");
+    maingameScreen.classList.add("hidden");
+});
+
+themeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+});
+
+overlayReset.addEventListener("click", () => {
+    location.reload();
+});
+
+overlayNext.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+    board.classList.add("hidden");
+    keyboardEl.classList.add("hidden");
+    shuffledEl.textContent = "L O A D I N G";
+    setTimeout(() => {
+        // Load next or show end
+        currentIndex++;
+        if (currentIndex >= words.length) {
+            showEnd();
+        } else {
+            saveData("lettershiftle_progress", {
+                index: currentIndex
+            });
+            startGame({
+                words
+            });
+
+        }
+        board.classList.remove("hidden");
+        keyboardEl.classList.remove("hidden");
+    }, 2800);
+});
+
+playbtn.addEventListener("click", () => {
+    home.classList.add("hidden");
+    progressText.classList.remove("hidden");
+    maingameScreen.classList.remove("hidden");
+    startGame({
+        words
+    });
+});
+
+selectLevel.addEventListener("click", () => {
+    home.classList.add("hidden");
+    maingameScreen.classList.add("hidden");
+    levels.classList.remove("hidden");
+    showLevelSelect();
+});

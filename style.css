@@ -1,6 +1,6 @@
 :root {
     --bg-dark: #0f1722;
-    --panel: #0b1220;
+    --panel: #0f1722;
     --text: #e6eef8;
     --muted: #98a0b3;
     --accent: #f0b90b;
@@ -8,16 +8,27 @@
     --correct: #6aaa64;
     --present: #c9b458;
     --absent: #3a3a3c;
+    --icon-color: #ffffff;
 }
 
 /* Light theme */
 body.light {
     --bg-dark: #f7f9fc;
-    --panel: #ffffff;
+    --panel: #f7f9fc;
     --text: #0b1320;
     --muted: #55607a;
     --accent: #b77900;
     --tile: #e6eef8;
+    --icon-color: #000000;
+}
+
+.home-icon {
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+body.light .home-icon {
+    filter: brightness(0) invert(0);
 }
 
 * {
@@ -81,6 +92,58 @@ body {
     font-size: 0.9rem
 }
 
+.homeScreen {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.btnMain {
+    width: 50dvh;
+    height: 60px;
+    margin: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btnMain:hover {
+  background-color: #444;
+}
+
+.btnMain .home-icon {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) invert(1); 
+  transition: filter 0.3s ease;
+}
+
+body.light .btnMain .home-icon {
+  filter: brightness(0) invert(0);
+}
+
+.logo {
+  width: 80dvw;
+  height: 50dvh;
+  margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--panel);
+}
+
 .center {
     display: flex;
     flex-direction: column;
@@ -97,9 +160,9 @@ body {
 }
 
 .board {
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  gap: 8px;
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 8px;
 }
 
 .board.hidden {
@@ -107,26 +170,26 @@ body {
 }
 
 .row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
 }
 
 .tile {
-  width: 60px;
-  height: 60px;
-  margin: 4px;
-  font-size: 2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #fff;
-  background-color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+    width: 60px;
+    height: 60px;
+    margin: 4px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease;
 }
 
 .tile.flip-half {
@@ -186,6 +249,10 @@ body {
     background: #2b2f33;
 }
 
+body.light .key.special {
+    --text: #ffffff;
+}
+
 .footer {
     margin-top: 18px;
     text-align: center;
@@ -225,33 +292,57 @@ body {
 }
 
 #levelSelect {
-  text-align: center;
-  padding: 20px;
+    text-align: center;
+    padding: 20px;
 }
+
 #levelButtons {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-  gap: 10px;
-  max-width: 400px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin: 18px auto;
+    max-width: 500px;
+    text-align: center;
 }
+
 #levelButtons button {
-  background: #333;
-  color: white;
-  border: 1px solid #666;
-  border-radius: 8px;
-  font-size: 1.2em;
-  padding: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
+    background-color: #222;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 6px;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    transition: background 0.2s;
 }
+
 #levelButtons button:hover {
-  background: #555;
+    background-color: #b77900;
 }
-body.light #levelButtons button {
-  background: #eee;
-  color: #222;
-  border-color: #ccc;
+
+
+button {
+    background: #333;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 8px;
+    font-size: 1.2em;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background: #555;
+}
+
+body.light button {
+    background: #eee;
+    color: #222;
+    border-color: #ccc;
 }
 
 .hidden {
