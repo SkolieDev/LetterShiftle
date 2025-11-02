@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Letter Shiftle</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="dark">
+    <main class="container">
+        <header class="top">
+            <h1>LetterShiftle</h1>
+            <div class="controls">
+                <button id="themeBtn" class="small">Toggle theme</button>
+                <div id="progressText" class="small muted">0/0</div>
+            </div>
+        </header>
+
+        <section class="center">
+            <p id="shuffledWord" class="shuffled">LOADING</p>
+            <div id="game-board" class="board" aria-hidden="false"></div>
+            <div id="keyboard" class="keyboard" aria-hidden="false"></div>
+        </section>
+
+        <footer class="footer muted">
+            Play at your pace — progress is saved locally. Made for itch.io by Skolie Dev.
+        </footer>
+    </main>
+
+    <!-- Overlay / popup -->
+    <div id="overlay" class="overlay hidden">
+        <div class="overlay-card">
+            <h2 id="overlay-title">Message</h2>
+            <p id="overlay-body"></p>
+            <div class="overlay-actions">
+                <button id="overlay-reset" class="small danger">Reset level</button>
+                <button id="overlay-next" class="small green">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- End screen -->
+    <div id="endScreen" class="overlay hidden">
+        <div class="overlay-card">
+            <h2>🎉 All done!</h2>
+            <p>You've completed all the words. Thanks for playing.</p>
+            <div class="overlay-actions">
+                <button id="restartBtn" class="small">Play again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
