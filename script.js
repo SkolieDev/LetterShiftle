@@ -5,7 +5,8 @@ let shuffledWord = "";
 let currentRow = 0;
 let currentGuess = "";
 let gameOver = false;
-
+let currentLang = 'en';
+let translations = {};
 
 const homeBtn = document.getElementById("homeBtn");
 const themeBtn = document.getElementById("themeBtn");
@@ -28,15 +29,37 @@ const overlayReset = document.getElementById("overlay-reset");
 const endScreen = document.getElementById("endScreen");
 const restartBtn = document.getElementById("restartBtn");
 const progressText = document.getElementById("progressText");
+const languageSelector = document.getElementById("language-selector");
 
+async function preloadWords() {
+    try {
+        const [esData, enData] = await Promise.all([
+            fetch("./words_es.json").then(r => r.json()),
+            fetch("./words_en.json").then(r => r.json())
+        ]);
 
-fetch("words.json").then(r => r.json()).then(loadGame);
+        // Guardamos ambos en memoria
+        wordsData = {
+            es: esData.words || esData,
+            en: enData.words || enData
+        };
 
-function loadGame(data) {
-    words = data.words;
-    maingameScreen.classList.add("hidden");
-    progressText.classList.add("hidden");
+        console.log("✅ Palabras precargadas:", {
+            es: wordsData.es.length,
+            en: wordsData.en.length
+        });
+
+        maingameScreen.classList.add("hidden");
+        progressText.classList.add("hidden");
+
+        words = wordsData[currentLang];
+
+    } catch (err) {
+        console.error("Error precargando palabras:", err);
+    }
 }
+
+preloadWords();
 
 function showLevelSelect() {
     const buttons = document.getElementById("levelButtons");
@@ -47,16 +70,14 @@ function showLevelSelect() {
         btn.textContent = i + 1;
         btn.addEventListener("click", () => {
             currentIndex = i;
-            startGame({
-                words
-            });
+            startGame();
         });
         buttons.appendChild(btn);
     }
 }
 
-function startGame(data) {
-    words = data.words;
+function startGame() {
+    progressText.classList.remove("hidden");
     // === Load last progress ===
     const progress = loadData("lettershiftle_progress") || {
         index: 0
@@ -208,10 +229,9 @@ function checkGuess() {
         showConfetti();
         overlayNext.classList.remove("hidden");
         overlayNext.classList.add("green");
-
         overlayReset.classList.remove("danger");
         overlayReset.classList.add("hidden");
-        showOverlayMessage("Correct!", "Nice job 🎉", false);
+        showOverlayMessage(t("correct"), t("nice_job"), false);
     } else {
         currentRow++;
         currentGuess = "";
@@ -222,7 +242,7 @@ function checkGuess() {
 
             overlayReset.classList.remove("hidden");
             overlayReset.classList.add("danger");
-            showOverlayMessage("Oh no! You lose!", `Try again?`, false);
+            showOverlayMessage(t("lose"), t("try_again"), false);
 
         }
     }
@@ -324,6 +344,7 @@ document.addEventListener("keydown", (e) => {
 // Theme toggler
 homeBtn.addEventListener("click", () => {
     home.classList.remove("hidden");
+    languageSelector.classList.remove("hidden");
     levels.classList.add("hidden");
     progressText.classList.add("hidden");
     maingameScreen.classList.add("hidden");
@@ -341,7 +362,7 @@ overlayNext.addEventListener("click", () => {
     overlay.classList.add("hidden");
     board.classList.add("hidden");
     keyboardEl.classList.add("hidden");
-    shuffledEl.textContent = "L O A D I N G";
+    shuffledEl.textContent = t("loading_2");
     setTimeout(() => {
         // Load next or show end
         currentIndex++;
@@ -363,16 +384,49 @@ overlayNext.addEventListener("click", () => {
 
 playbtn.addEventListener("click", () => {
     home.classList.add("hidden");
-    progressText.classList.remove("hidden");
-    maingameScreen.classList.remove("hidden");
-    startGame({
-        words
-    });
+    startGame(); // Solo se ejecuta una vez
 });
 
 selectLevel.addEventListener("click", () => {
+    languageSelector.classList.add("hidden");
     home.classList.add("hidden");
     maingameScreen.classList.add("hidden");
     levels.classList.remove("hidden");
     showLevelSelect();
 });
+
+// === LANGUAGE ===
+async function loadLanguage(lang) {
+    const response = await fetch('./lang.json');
+    translations = await response.json();
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = translations[lang][key] || key;
+    });
+}
+
+document.getElementById('language-selector').addEventListener('change', e => {
+    loadLanguage(e.target.value);
+    loadWords();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('language') || 'es';
+    document.getElementById('language-selector').value = savedLang;
+    loadLanguage(savedLang);
+});
+
+function t(key) {
+    return translations[currentLang]?.[key] || key;
+}
+
+function loadWords() {
+    words = wordsData[currentLang];
+    if (!words) {
+        console.error("No se han cargado las palabras para:", currentLang);
+        return;
+    }
+}

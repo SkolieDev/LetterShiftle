@@ -22,43 +22,44 @@
                     </svg>
                 </button>
                 <div id="progressText" class="small muted">0/0</div>
+                <select id="language-selector" class="small">
+                    <option value="es" style="color: black">ES</option>
+                    <option value="en" style="color: black">EN</option>
+                </select>
             </div>
         </header>
 
         <!-- Home -->
         <div id="home" class="homeScreen">
             <img src="./LetterShiftle Logo.png" alt="" class="logo">
-            <button id="playbtn" class="btnMain">Play</button>
-            <button id="levelSelect" class="btnMain">Select level</button>
-            <!-- <button id="settingsbtn" class="btnMain">Settings</button> -->
+            <button id="playbtn" class="btnMain" data-i18n="play"></button>
+            <button id="levelSelect" class="btnMain" data-i18n="select_level"></button>
         </div>
 
         <!-- Select Levels -->
         <div id="levels" class="hidden">
-            <h2>Select Level</h2>
+            <h2 data-i18n="select_level"></h2>
             <div id="levelButtons"></div>
         </div>
 
         <!-- Game -->
         <section id="maingame" class="center">
-            <p id="shuffledWord" class="shuffled">LOADING</p>
+            <p id="shuffledWord" class="shuffled" data-i18n="loading"></p>
             <div id="game-board" class="board" aria-hidden="false"></div>
             <div id="keyboard" class="keyboard" aria-hidden="false"></div>
         </section>
 
-        <footer class="footer muted">
-            Play at your pace. Made for itch.io by Skolie Dev.
-        </footer>
+        <footer class="footer muted" data-i18n="footer"></footer>
     </main>
 
     <!-- Overlay / popup -->
     <div id="overlay" class="overlay hidden">
         <div class="overlay-card">
-            <h2 id="overlay-title">Message</h2>
+            <h2 id="overlay-title" data-i18n="message"></h2>
             <p id="overlay-body"></p>
             <div class="overlay-actions">
-                <button id="overlay-reset" class="small danger">Reset level</button>
-                <button id="overlay-next" class="small green">Next</button>
+                <button id="overlay-reset" class="small danger" data-i18n="reset_level"></button>
+                <button id="overlay-next" class="small green" data-i18n="next"></button>
             </div>
         </div>
     </div>
@@ -66,10 +67,10 @@
     <!-- End screen -->
     <div id="endScreen" class="overlay hidden">
         <div class="overlay-card">
-            <h2>🎉 All done!</h2>
-            <p>You've completed all the words. Thanks for playing.</p>
+            <h2 data-i18n="all_done_title"></h2>
+            <p data-i18n="all_done_text"></p>
             <div class="overlay-actions">
-                <button id="restartBtn" class="small">Play again</button>
+                <button id="restartBtn" class="small" data-i18n="play_again"></button>
             </div>
         </div>
     </div>

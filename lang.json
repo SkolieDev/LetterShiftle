@@ -1,0 +1,41 @@
+{
+  "es": {
+    "play": "Jugar",
+    "select_level": "Selecciona nivel",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "score": "Puntuación",
+    "footer": "Juega a tu ritmo. Hecho para itch.io por Skolie Dev.",
+    "loading": "CARGANDO",
+    "loading_2": "C A R G A N D O",
+    "message": "Mensaje",
+    "reset_level": "Reiniciar nivel",
+    "next": "Siguiente",
+    "all_done_title": "🎉 ¡Completado!",
+    "all_done_text": "Has completado todas las palabras. Gracias por jugar.",
+    "try_again": "¿Intentar de nuevo?",
+    "lose": "¡Oh no! Perdiste...",
+    "correct": "¡Correcto!", 
+    "nice_job": "Buen trabajo 🎉"
+  },
+  "en": {
+    "play": "Play",
+    "select_level": "Select level",
+    "settings": "Settings",
+    "language": "Language",
+    "score": "Score",
+    "exit": "Exit",
+    "footer": "Play at your pace. Made for itch.io by Skolie Dev.",
+    "loading": "LOADING",
+    "loading_2": "L O A D I N G",
+    "message": "Message",
+    "reset_level": "Reset level",
+    "next": "Next",
+    "all_done_title": "🎉 All done!",
+    "all_done_text": "You've completed all the words. Thanks for playing.",
+    "try_again": "Try again?",
+    "lose": "Oh no! You lose...",
+    "correct": "Correct!", 
+    "nice_job": "Nice job 🎉"
+  }
+}
