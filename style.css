@@ -7,16 +7,16 @@
     --tile: #24282b;
     --correct: #6aaa64;
     --present: #c9b458;
-    --absent: #3a3a3c;
+    --absent: #3939bc;
     --icon-color: #ffffff;
 }
 
 /* Light theme */
 body.light {
-    --bg-dark: #f7f9fc;
+    --bg-dark: #b7d4ff;
     --panel: #f7f9fc;
     --text: #0b1320;
-    --muted: #55607a;
+    --muted: #6483cd;
     --accent: #b77900;
     --tile: #e6eef8;
     --icon-color: #000000;
@@ -119,29 +119,29 @@ body {
 }
 
 .btnMain:hover {
-  background-color: #444;
+    background-color: #444;
 }
 
 .btnMain .home-icon {
-  width: 28px;
-  height: 28px;
-  filter: brightness(0) invert(1); 
-  transition: filter 0.3s ease;
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
 }
 
 body.light .btnMain .home-icon {
-  filter: brightness(0) invert(0);
+    filter: brightness(0) invert(0);
 }
 
 .logo {
-  width: 80dvw;
-  height: 50dvh;
-  margin: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: var(--panel);
+    width: 80dvw;
+    height: 50dvh;
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--panel);
 }
 
 .center {
@@ -291,38 +291,82 @@ body.light .key.special {
     margin-top: 12px;
 }
 
-#levelSelect {
-    text-align: center;
-    padding: 20px;
-}
-
-#levelButtons {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-    gap: 8px;
-    justify-content: center;
-    align-items: center;
-    margin: 18px auto;
-    max-width: 500px;
-    text-align: center;
-}
-
-#levelButtons button {
-    background-color: #222;
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-    border-radius: 6px;
-    width: 100%;
-    height: 40px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
 #levelButtons button:hover {
     background-color: #b77900;
 }
 
+/* ======= General ======= */
+#levels {
+    text-align: center;
+    color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+#levels h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* ======= Level Grid ======= */
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 10px;
+    justify-items: center;
+    margin-bottom: 20px;
+}
+
+.level-grid button {
+    width: 50px;
+    height: 50px;
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    border: 1px solid #333;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.level-grid button:hover {
+    background-color: #333;
+    transform: scale(1.08);
+    border-color: #555;
+}
+
+/* ======= Pagination ======= */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.page-btn {
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 60px;
+}
+
+.page-btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+#pageIndicator {
+    font-size: 1rem;
+    opacity: 0.8;
+}
 
 button {
     background: #333;
@@ -336,7 +380,12 @@ button {
 }
 
 button:hover {
-    background: #555;
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+body.light button:hover {
+    background: #f0b90b;
 }
 
 body.light button {
@@ -347,6 +396,49 @@ body.light button {
 
 .hidden {
     display: none;
+}
+
+/* === BLOQUE DE TÍTULO === */
+.title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    margin-bottom: 2rem;
+    padding: 0;
+}
+
+
+.word {
+    margin: 0.3rem 0;
+}
+
+/* === LETRAS === */
+.letter-tile {
+    display: inline-block;
+    background: #fff;
+    color: #222;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 2rem;
+    padding: 0.5rem 0.75rem;
+    margin: 0.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.letter-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* === FLECHA ANIMADA === */
+.arrow {
+    font-size: 2.5rem;
+    color: #2f80ed;
+    margin: 0.8rem 0;
+    animation: bounce 1.5s infinite;
 }
 
 /* confetti */
@@ -361,6 +453,19 @@ body.light button {
     animation: fall linear forwards;
 }
 
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 @keyframes fall {
     to {
         transform: translateY(120vh) rotate(720deg);
@@ -370,7 +475,7 @@ body.light button {
 
 /* responsive */
 @media (max-width:600px) {
-    .tile {
+    .title {
         width: 48px;
         height: 48px;
         font-size: 1.1rem;
@@ -383,5 +488,19 @@ body.light button {
     .shuffled {
         font-size: 1.2rem;
         letter-spacing: 0.45rem
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .letter-tile {
+        font-size: 1.4rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    button {
+        width: 80%;
+        font-size: 0.9rem;
     }
 }

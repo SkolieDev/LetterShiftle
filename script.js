@@ -38,7 +38,6 @@ async function preloadWords() {
             fetch("./words_en.json").then(r => r.json())
         ]);
 
-        // Guardamos ambos en memoria
         wordsData = {
             es: esData.words || esData,
             en: enData.words || enData
@@ -61,20 +60,56 @@ async function preloadWords() {
 
 preloadWords();
 
-function showLevelSelect() {
-    const buttons = document.getElementById("levelButtons");
-    buttons.innerHTML = "";
+let currentPage = 0;
+const levelsPerPage = 50;
 
-    for (let i = 0; i < Math.min(words.length, 600); i++) {
+function showLevelSelect() {
+    const buttonsContainer = document.getElementById("levelButtons");
+    const pageIndicator = document.getElementById("pageIndicator");
+    const prevPageBtn = document.getElementById("prevPage");
+    const nextPageBtn = document.getElementById("nextPage");
+
+    buttonsContainer.innerHTML = "";
+
+    const totalLevels = Math.min(words.length, 600);
+    const totalPages = Math.ceil(totalLevels / levelsPerPage);
+
+    const start = currentPage * levelsPerPage;
+    const end = Math.min(start + levelsPerPage, totalLevels);
+
+    // Crear botones de nivel
+    for (let i = start; i < end; i++) {
         const btn = document.createElement("button");
         btn.textContent = i + 1;
+
         btn.addEventListener("click", () => {
             currentIndex = i;
             startGame();
         });
-        buttons.appendChild(btn);
+
+        buttonsContainer.appendChild(btn);
     }
+
+    pageIndicator.textContent = `${currentPage + 1} / ${totalPages}`;
+    prevPageBtn.disabled = currentPage === 0;
+    nextPageBtn.disabled = currentPage === totalPages - 1;
+
+    prevPageBtn.onclick = () => {
+        if (currentPage > 0) {
+            currentPage--;
+            showLevelSelect();
+        }
+    };
+
+    nextPageBtn.onclick = () => {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            showLevelSelect();
+        }
+    };
 }
+
+
 
 function startGame() {
     progressText.classList.remove("hidden");
@@ -341,7 +376,6 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-// Theme toggler
 homeBtn.addEventListener("click", () => {
     home.classList.remove("hidden");
     languageSelector.classList.remove("hidden");
@@ -384,6 +418,7 @@ overlayNext.addEventListener("click", () => {
 
 playbtn.addEventListener("click", () => {
     home.classList.add("hidden");
+    languageSelector.classList.add("hidden");
     startGame(); // Solo se ejecuta una vez
 });
 

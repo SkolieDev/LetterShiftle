@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="dark">
+<body class="light">
     <main class="container">
         <header class="top">
             <button id="homeBtn" class="small">
@@ -31,16 +31,46 @@
 
         <!-- Home -->
         <div id="home" class="homeScreen">
-            <img src="./LetterShiftle Logo.png" alt="" class="logo">
+
+            <div class="title-block">
+                <div class="word">
+                    <span class="letter-tile">L</span>
+                    <span class="letter-tile">E</span>
+                    <span class="letter-tile">T</span>
+                    <span class="letter-tile">T</span>
+                    <span class="letter-tile">E</span>
+                    <span class="letter-tile">R</span>
+                </div>
+
+                <div class="arrow">⇆</div>
+
+                <div class="word">
+                    <span class="letter-tile">S</span>
+                    <span class="letter-tile">H</span>
+                    <span class="letter-tile">I</span>
+                    <span class="letter-tile">F</span>
+                    <span class="letter-tile">T</span>
+                    <span class="letter-tile">L</span>
+                    <span class="letter-tile">E</span>
+                </div>
+            </div>
+
             <button id="playbtn" class="btnMain" data-i18n="play"></button>
             <button id="levelSelect" class="btnMain" data-i18n="select_level"></button>
         </div>
 
         <!-- Select Levels -->
         <div id="levels" class="hidden">
-            <h2 data-i18n="select_level"></h2>
-            <div id="levelButtons"></div>
+            <h2 data-i18n="select_level">Selecciona nivel</h2>
+            <div id="levelButtons" class="level-grid"></div>
+            <div class="pagination">
+                <button id="prevPage" class="page-btn">←</button>
+                <span id="pageIndicator">1 / ?</span>
+                <button id="nextPage" class="page-btn">→</button>
+            </div>
         </div>
+
+
 
         <!-- Game -->
         <section id="maingame" class="center">
