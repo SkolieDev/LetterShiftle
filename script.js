@@ -7,6 +7,7 @@ let currentGuess = "";
 let gameOver = false;
 let currentLang = 'en';
 let translations = {};
+let wordsData = {};
 
 const homeBtn = document.getElementById("homeBtn");
 const themeBtn = document.getElementById("themeBtn");
@@ -389,7 +390,8 @@ themeBtn.addEventListener("click", () => {
 });
 
 overlayReset.addEventListener("click", () => {
-    location.reload();
+    overlay.classList.add("hidden");
+    startGame();
 });
 
 overlayNext.addEventListener("click", () => {
